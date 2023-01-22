@@ -1,4 +1,3 @@
-import React from 'react';
 import { StompSessionProvider } from 'react-stomp-hooks';
 import styles from './app.module.css';
 import MainView from './pages/MainView/MainView';
