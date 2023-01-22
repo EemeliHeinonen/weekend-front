@@ -1,13 +1,19 @@
-import React from 'react';
-import { useReactTable, getPaginationRowModel, flexRender, ColumnDef, getCoreRowModel } from '@tanstack/react-table';
+import {
+  useReactTable,
+  getPaginationRowModel,
+  flexRender,
+  ColumnDef,
+  getCoreRowModel,
+} from '@tanstack/react-table';
 import { StockEvent } from '../pages/MainView/MainView';
 
 interface TableProps {
   data: StockEvent[];
   columns: ColumnDef<StockEvent>[];
+  priceThreshold: number;
 }
 
-function Table({ columns, data }: TableProps) {
+function Table({ columns, data, priceThreshold }: TableProps) {
   const { getHeaderGroups, getRowModel } = useReactTable({
     columns,
     data,
@@ -26,16 +32,30 @@ function Table({ columns, data }: TableProps) {
         {getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <th key={header.id}>{flexRender(header.column.columnDef.header, header.getContext())}</th>
+              <th key={header.id}>
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext()
+                )}
+              </th>
             ))}
           </tr>
         ))}
       </thead>
       <tbody>
         {getRowModel().rows.map((row) => (
-          <tr key={row.id} style={{ backgroundColor: row.original.price < 4000 ? 'red' : 'green', color: 'white' }}>
+          <tr
+            key={row.id}
+            style={{
+              backgroundColor:
+                row.original.price < priceThreshold ? 'red' : 'green',
+              color: 'white',
+            }}
+          >
             {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+              <td key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </td>
             ))}
           </tr>
         ))}
